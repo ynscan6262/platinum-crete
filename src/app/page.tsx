@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { motion, useScroll, useTransform, type Variants } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
@@ -56,6 +56,7 @@ export default function HomePage() {
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollY } = useScroll();
   const heroY = useTransform(scrollY, [0, 600], [0, -180]);
+  const [videoFailed, setVideoFailed] = useState(false);
 
   const aboutRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress: aboutProgress } = useScroll({ target: aboutRef, offset: ["start end", "end start"] });
@@ -65,15 +66,27 @@ export default function HomePage() {
     <>
       {/* ── HERO ── */}
       <section ref={heroRef} className="relative h-screen w-full overflow-hidden flex items-center justify-center">
-        <video
-          className="absolute inset-0 w-full h-full object-cover"
-          src="/hero-video.mp4"
-          autoPlay
-          muted
-          loop
-          playsInline
-          poster="/gallery/project-1.jpg"
-        />
+        {videoFailed ? (
+          <Image
+            src="/gallery/project-1.jpg"
+            alt="PLATINUM-CRETE hero"
+            fill
+            className="object-cover"
+            priority
+            sizes="100vw"
+          />
+        ) : (
+          <video
+            className="absolute inset-0 w-full h-full object-cover"
+            src="/hero-video.mp4"
+            autoPlay
+            muted
+            loop
+            playsInline
+            poster="/gallery/project-1.jpg"
+            onError={() => setVideoFailed(true)}
+          />
+        )}
         <div className="absolute inset-0 bg-black/55" />
 
         <motion.div style={{ y: heroY }} className="relative z-10 text-center px-6 max-w-5xl mx-auto">
