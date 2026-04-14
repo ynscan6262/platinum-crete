@@ -72,7 +72,7 @@ export default function HomePage() {
           muted
           loop
           playsInline
-          /* TODO: Add hero-poster.jpg for video fallback */
+          poster="/gallery/project-1.jpg"
         />
         <div className="absolute inset-0 bg-black/55" />
 
